@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Platform.Helpers
 {
-
-
     public class Default
     {
         public static void InitializeThreadInstance<T>()
