@@ -111,7 +111,7 @@ namespace Platform.Helpers.Scopes
             }
             if (!TryResolve(out T resolved))
             {
-                throw new Exception($"Dependency of type {typeof(T).Name} cannot be resolved.");
+                throw new InvalidOperationException($"Dependency of type {typeof(T).Name} cannot be resolved.");
             }
             if (!_autoInclude)
             {
