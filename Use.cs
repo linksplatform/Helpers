@@ -4,7 +4,7 @@ namespace Platform.Helpers
 {
     public static class Use<T>
     {
-        public static T Single => Global.Scope.Use<T>();
+        public static T Single => Scope.Global.Use<T>();
 
         public static Disposable<T> New
         {
