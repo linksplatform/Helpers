@@ -8,7 +8,7 @@ namespace Platform.Helpers.Setters
         {
         }
 
-        public Setter(TResult defaultValue = default)
+        public Setter(TResult defaultValue)
             : base(defaultValue)
         {
         }
