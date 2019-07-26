@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Platform.Helpers
+﻿namespace Platform.Helpers
 {
     public static class Global
     {
@@ -13,11 +11,5 @@ namespace Platform.Helpers
         /// реализации тестов на производительность.
         /// </summary>
         public static object Trash = Default<object>.Instance;
-
-        public static Scope Scope = new Scope(autoInclude: true, autoExplore: true);
-
-        public static event EventHandler<Exception> IgnoredException = (sender, exception) => { }; // TODO: Change default handler later
-
-        public static void OnIgnoredException(Exception exception) => IgnoredException.Invoke(null, exception);
     }
 }

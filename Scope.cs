@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using Platform.Interfaces;
+using Platform.Exceptions;
 using Platform.Disposables;
 using Platform.Collections.Lists;
 using Platform.Reflection;
@@ -11,6 +12,8 @@ namespace Platform.Helpers
 {
     public class Scope : DisposableBase
     {
+        public static Scope Global = new Scope(autoInclude: true, autoExplore: true);
+
         private readonly bool _autoInclude;
         private readonly bool _autoExplore;
         private readonly Stack<object> _dependencies = new Stack<object>();
@@ -54,23 +57,29 @@ namespace Platform.Helpers
         public void Include<T>()
         {
             var types = Types.Get<T>();
-
-            if (types.Length > 0)
+            if (types.Count > 0)
+            {
                 types.ForEach(Include);
+            }
             else
+            {
                 Include(typeof(T));
+            }
         }
 
         public void Include(object @object)
         {
             if (@object == null)
+            {
                 return;
-
+            }
             if (_includes.Add(@object))
             {
                 var type = @object as Type;
                 if (type == null)
+                {
                     return;
+                }
                 type.GetInterfaces().ForEach(Include);
                 Include(type.GetBaseType());
             }
@@ -88,17 +97,21 @@ namespace Platform.Helpers
         public T Use<T>()
         {
             if (_excludes.Contains(typeof(T)))
+            {
                 throw new Exception($"Type {typeof(T).Name} is excluded and cannot be used.");
-
+            }
             if (_autoInclude)
+            {
                 Include<T>();
-
+            }
             if (!TryResolve(out T resolved))
+            {
                 throw new Exception($"Dependency of type {typeof(T).Name} cannot be resolved.");
-
+            }
             if (!_autoInclude)
+            {
                 Include<T>();
-
+            }
             Use(resolved);
             return resolved;
         }
@@ -126,68 +139,80 @@ namespace Platform.Helpers
         public bool TryResolve<T>(out T resolved)
         {
             resolved = default;
-
             var result = TryResolve(typeof(T), out object resolvedObject);
-
-            if (result) resolved = (T)resolvedObject;
+            if (result)
+            {
+                resolved = (T)resolvedObject;
+            }
             return result;
         }
 
         public bool TryResolve(Type requiredType, out object resolved)
         {
             resolved = null;
-
             if (!_blocked.Add(requiredType))
+            {
                 return false;
-
+            }
             try
             {
                 if (_excludes.Contains(requiredType))
+                {
                     return false;
-
+                }
                 if (_resolutions.TryGetValue(requiredType, out resolved))
+                {
                     return true;
-
+                }
                 if (_autoExplore)
+                {
                     IncludeAssemblyOfType(requiredType);
-
+                }
                 var resultInstances = new List<object>();
                 var resultConstructors = new List<ConstructorInfo>();
-
                 foreach (var include in _includes)
                 {
                     if (_excludes.Contains(include))
+                    {
                         continue;
-
+                    }
                     var type = include as Type;
-
                     if (type != null)
                     {
                         if (requiredType.IsAssignableFrom(type))
+                        {
                             resultConstructors.AddRange(GetValidConstructors(type));
+                        }
                         else if (type.GetTypeInfo().IsGenericTypeDefinition && requiredType.GetTypeInfo().IsGenericType && type.GetInterfaces().Any(x => x.Name == requiredType.Name))
                         {
                             var genericType = type.MakeGenericType(requiredType.GenericTypeArguments);
                             if (requiredType.IsAssignableFrom(genericType))
+                            {
                                 resultConstructors.AddRange(GetValidConstructors(genericType));
+                            }
                         }
                     }
                     else if (requiredType.IsInstanceOfType(include) || requiredType.IsAssignableFrom(include.GetType()))
+                    {
                         resultInstances.Add(include);
+                    }
                 }
-
                 if (resultInstances.Count == 0 && resultConstructors.Count == 0)
+                {
                     return false;
+                }
                 else if (resultInstances.Count > 0)
+                {
                     resolved = resultInstances[0];
+                }
                 else //if (resultConstructors.Count > 0)
                 {
                     SortConstructors(resultConstructors);
-
                     if (!TryResolveInstance(resultConstructors, out resolved))
+                    {
                         return false;
+                    }
                 }
-
                 _resolutions.Add(requiredType, resolved);
                 return true;
             }
@@ -206,19 +231,17 @@ namespace Platform.Helpers
                 try
                 {
                     var resultConstructor = constructors[i];
-
-                    if (!TryResolveConstructorArguments(resultConstructor, out object[] arguments))
-                        continue;
-
-                    resolved = resultConstructor.Invoke(arguments);
-                    return true;
+                    if (TryResolveConstructorArguments(resultConstructor, out object[] arguments))
+                    {
+                        resolved = resultConstructor.Invoke(arguments);
+                        return true;
+                    }
                 }
                 catch (Exception exception)
                 {
-                    Global.OnIgnoredException(exception);
+                    exception.Ignore();
                 }
             }
-
             resolved = null;
             return false;
         }
@@ -226,36 +249,37 @@ namespace Platform.Helpers
         private ConstructorInfo[] GetValidConstructors(Type type)
         {
             var constructors = type.GetConstructors();
-
             if (!_autoExplore)
+            {
                 constructors = constructors.ToArray(x =>
                 {
                     var parameters = x.GetParameters();
                     for (var i = 0; i < parameters.Length; i++)
+                    {
                         if (!_includes.Contains(parameters[i].ParameterType))
+                        {
                             return false;
+                        }
+                    }
                     return true;
                 });
-
+            }
             return constructors;
         }
 
         private bool TryResolveConstructorArguments(ConstructorInfo constructor, out object[] arguments)
         {
             var parameters = constructor.GetParameters();
-
             arguments = new object[parameters.Length];
-
             for (var i = 0; i < parameters.Length; i++)
             {
                 if (!TryResolve(parameters[i].ParameterType, out object argument))
+                {
                     return false;
-
+                }
                 Use(argument);
-
                 arguments[i] = argument;
             }
-
             return true;
         }
 
@@ -264,7 +288,9 @@ namespace Platform.Helpers
         protected override void DisposeCore(bool manual, bool wasDisposed)
         {
             while (_dependencies.Count > 0)
+            {
                 Disposable.TryDispose(_dependencies.Pop());
+            }
         }
     }
 }
