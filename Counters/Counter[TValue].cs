@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
 namespace Platform.Helpers.Counters
 {
     public class Counter<TValue> : Counter
@@ -7,14 +9,14 @@ namespace Platform.Helpers.Counters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IncrementAndReturnTrue()
         {
-            Count++;
+            _count++;
             return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IncrementAndReturnTrue(TValue value)
         {
-            Count++;
+            _count++;
             return true;
         }
     }
