@@ -15,26 +15,34 @@ namespace Platform.Helpers
         public static T DeserializeFromXmlFile<T>(string path)
         {
             using (var reader = File.OpenRead(path))
+            {
                 return (T)GetCachedXmlSerializer<T>().Deserialize(reader);
+            }
         }
 
         public static T DeserializeFromXmlString<T>(string xmlString)
         {
             using (var reader = new StringReader(xmlString))
+            {
                 return (T)GetCachedXmlSerializer<T>().Deserialize(reader);
+            }
         }
 
         public static void SerializeToXmlFile<T>(T obj, string path)
         {
             using (var fileStream = File.OpenWrite(path))
+            {
                 GetCachedXmlSerializer<T>().Serialize(fileStream, obj);
+            }
         }
 
         public static string SerializeToXmlString<T>(T obj)
         {
             var sb = new StringBuilder();
             using (var writer = new StringWriter(sb))
+            {
                 GetCachedXmlSerializer<T>().Serialize(writer, obj);
+            }
             return sb.ToString();
         }
     }

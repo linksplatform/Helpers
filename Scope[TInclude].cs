@@ -7,7 +7,11 @@
         {
         }
 
-        public Scope(bool autoInclude = false, bool autoExplore = false)
-            : base(autoInclude, autoExplore) => Include<TInclude>();
+        public Scope(bool autoInclude)
+            : this(autoInclude, false)
+        {
+        }
+
+        public Scope(bool autoInclude, bool autoExplore) : base(autoInclude, autoExplore) => Include<TInclude>();
     }
 }

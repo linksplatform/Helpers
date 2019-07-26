@@ -10,6 +10,6 @@
         /// таким образом мы обманываем компилятор. Такое может быть полезно при
         /// реализации тестов на производительность.
         /// </summary>
-        public static object Trash = Default<object>.Instance;
+        public static object Trash;
     }
 }

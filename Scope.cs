@@ -26,7 +26,12 @@ namespace Platform.Helpers
         {
         }
 
-        public Scope(bool autoInclude = false, bool autoExplore = false)
+        public Scope(bool autoInclude)
+            : this(autoInclude, false)
+        {
+        }
+
+        public Scope(bool autoInclude, bool autoExplore)
         {
             _autoInclude = autoInclude;
             _autoExplore = autoExplore;
@@ -76,12 +81,11 @@ namespace Platform.Helpers
             if (_includes.Add(@object))
             {
                 var type = @object as Type;
-                if (type == null)
+                if (type != null)
                 {
-                    return;
+                    type.GetInterfaces().ForEach(Include);
+                    Include(type.GetBaseType());
                 }
-                type.GetInterfaces().ForEach(Include);
-                Include(type.GetBaseType());
             }
         }
 
@@ -172,29 +176,28 @@ namespace Platform.Helpers
                 var resultConstructors = new List<ConstructorInfo>();
                 foreach (var include in _includes)
                 {
-                    if (_excludes.Contains(include))
+                    if (!_excludes.Contains(include))
                     {
-                        continue;
-                    }
-                    var type = include as Type;
-                    if (type != null)
-                    {
-                        if (requiredType.IsAssignableFrom(type))
+                        var type = include as Type;
+                        if (type != null)
                         {
-                            resultConstructors.AddRange(GetValidConstructors(type));
-                        }
-                        else if (type.GetTypeInfo().IsGenericTypeDefinition && requiredType.GetTypeInfo().IsGenericType && type.GetInterfaces().Any(x => x.Name == requiredType.Name))
-                        {
-                            var genericType = type.MakeGenericType(requiredType.GenericTypeArguments);
-                            if (requiredType.IsAssignableFrom(genericType))
+                            if (requiredType.IsAssignableFrom(type))
                             {
-                                resultConstructors.AddRange(GetValidConstructors(genericType));
+                                resultConstructors.AddRange(GetValidConstructors(type));
+                            }
+                            else if (type.GetTypeInfo().IsGenericTypeDefinition && requiredType.GetTypeInfo().IsGenericType && type.GetInterfaces().Any(x => x.Name == requiredType.Name))
+                            {
+                                var genericType = type.MakeGenericType(requiredType.GenericTypeArguments);
+                                if (requiredType.IsAssignableFrom(genericType))
+                                {
+                                    resultConstructors.AddRange(GetValidConstructors(genericType));
+                                }
                             }
                         }
-                    }
-                    else if (requiredType.IsInstanceOfType(include) || requiredType.IsAssignableFrom(include.GetType()))
-                    {
-                        resultInstances.Add(include);
+                        else if (requiredType.IsInstanceOfType(include) || requiredType.IsAssignableFrom(include.GetType()))
+                        {
+                            resultInstances.Add(include);
+                        }
                     }
                 }
                 if (resultInstances.Count == 0 && resultConstructors.Count == 0)
