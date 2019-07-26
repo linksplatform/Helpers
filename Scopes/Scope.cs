@@ -13,7 +13,7 @@ namespace Platform.Helpers.Scopes
 {
     public class Scope : DisposableBase
     {
-        public static Scope Global = new Scope(autoInclude: true, autoExplore: true);
+        public static readonly Scope Global = new Scope(autoInclude: true, autoExplore: true);
 
         private readonly bool _autoInclude;
         private readonly bool _autoExplore;
