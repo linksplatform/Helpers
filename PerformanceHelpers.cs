@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Platform.Helpers
 {
-    public class PerformanceHelpers
+    public static class PerformanceHelpers
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TimeSpan Measure(Action action)
