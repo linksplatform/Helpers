@@ -7,11 +7,17 @@ namespace Platform.Helpers.Setters
     /// </remarks>
     public abstract class SetterBase<TResult>
     {
-        public TResult Result;
+        protected TResult _result;
 
-        protected SetterBase(TResult defaultValue = default) => Result = defaultValue;
+        public TResult Result => _result;
+
+        protected SetterBase()
+        {
+        }
+
+        protected SetterBase(TResult defaultValue) => _result = defaultValue;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Set(TResult value) => Result = value;
+        public void Set(TResult value) => _result = value;
     }
 }
