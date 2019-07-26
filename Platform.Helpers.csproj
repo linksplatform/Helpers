@@ -4,7 +4,7 @@
     <Description>LinksPlatform's Platform.Helpers Class Library</Description>
     <Copyright>Konstantin Diachenko</Copyright>
     <AssemblyTitle>Platform.Helpers</AssemblyTitle>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.1</VersionPrefix>
     <Authors>Konstantin Diachenko</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Platform.Helpers</AssemblyName>
@@ -21,6 +21,17 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReleaseNotes>Exceptions are now correctly ignored.
+Platform.Reflection dependency updated from 0.0.2 to 0.0.3.
+Global.Scope moved to Scope.Global.
+Counter.Count is now property, not field.
+SetterBase.Result is now property, not field.
+Default classes are static now.
+New namespace Platform.Helpers.Scopes:
+Scope, Scope&lt;TInclude&gt; and Use&lt;T&gt; classes moved here.
+New namespace Platform.Helpers.Singletons:
+Default, Default&lt;T&gt;, Global, Singleton, Singleton&lt;T&gt; classes and structs moved here.
+Issues fixes.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
