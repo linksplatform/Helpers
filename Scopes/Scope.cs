@@ -103,7 +103,7 @@ namespace Platform.Helpers.Scopes
         {
             if (_excludes.Contains(typeof(T)))
             {
-                throw new Exception($"Type {typeof(T).Name} is excluded and cannot be used.");
+                throw new InvalidOperationException($"Type {typeof(T).Name} is excluded and cannot be used.");
             }
             if (_autoInclude)
             {
