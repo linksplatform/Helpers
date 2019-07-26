@@ -1,6 +1,6 @@
 ﻿using Platform.Disposables;
 
-namespace Platform.Helpers
+namespace Platform.Helpers.Scopes
 {
     public static class Use<T>
     {

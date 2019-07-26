@@ -5,7 +5,7 @@ using Platform.Interfaces;
 using Platform.Collections.Lists;
 using Platform.Reflection;
 
-namespace Platform.Helpers
+namespace Platform.Helpers.Singletons
 {
     public static class Singleton
     {

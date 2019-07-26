@@ -1,4 +1,4 @@
-﻿namespace Platform.Helpers
+﻿namespace Platform.Helpers.Singletons
 {
     public static class Global
     {

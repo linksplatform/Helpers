@@ -7,8 +7,9 @@ using Platform.Exceptions;
 using Platform.Disposables;
 using Platform.Collections.Lists;
 using Platform.Reflection;
+using Platform.Helpers.Singletons;
 
-namespace Platform.Helpers
+namespace Platform.Helpers.Scopes
 {
     public class Scope : DisposableBase
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Platform.Helpers
+namespace Platform.Helpers.Singletons
 {
     /// <summary>
     /// Представляет собой точку доступа к экземплярям типов по умолчанию (созданных с помощью конструктора без аргументов).

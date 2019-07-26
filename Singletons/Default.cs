@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Platform.Helpers
+namespace Platform.Helpers.Singletons
 {
     public static class Default
     {
@@ -11,7 +11,7 @@ namespace Platform.Helpers
         public static T GetOrCreateThreadInstance<T>() where T : class, new() => Default<T>.ThreadInstance ?? (Default<T>.ThreadInstance = new T());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetOrCreateThreadInstance<T>(T nullValue) where T : struct 
+        public static T GetOrCreateThreadInstance<T>(T nullValue) where T : struct
             => EqualityComparer<T>.Default.Equals(Default<T>.ThreadInstance, nullValue) ? (Default<T>.ThreadInstance = new T()) : Default<T>.ThreadInstance;
     }
 }

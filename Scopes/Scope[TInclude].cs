@@ -1,4 +1,4 @@
-﻿namespace Platform.Helpers
+﻿namespace Platform.Helpers.Scopes
 {
     public class Scope<TInclude> : Scope
     {
