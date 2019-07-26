@@ -209,7 +209,7 @@ namespace Platform.Helpers.Scopes
                 {
                     resolved = resultInstances[0];
                 }
-                else //if (resultConstructors.Count > 0)
+                else
                 {
                     SortConstructors(resultConstructors);
                     if (!TryResolveInstance(resultConstructors, out resolved))
