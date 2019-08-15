@@ -8,11 +8,9 @@ namespace Platform.Helpers.Counters
     {
         private readonly TDecision _trueValue;
 
-        public Counter()
-        {
-        }
-
         public Counter(TDecision trueValue) => _trueValue = trueValue;
+
+        public Counter() { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TDecision IncrementAndReturnTrue()

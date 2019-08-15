@@ -23,20 +23,15 @@ namespace Platform.Helpers.Scopes
         private readonly HashSet<object> _blocked = new HashSet<object>();
         private readonly Dictionary<Type, object> _resolutions = new Dictionary<Type, object>();
 
-        public Scope()
-        {
-        }
-
-        public Scope(bool autoInclude)
-            : this(autoInclude, false)
-        {
-        }
-
         public Scope(bool autoInclude, bool autoExplore)
         {
             _autoInclude = autoInclude;
             _autoExplore = autoExplore;
         }
+
+        public Scope(bool autoInclude) : this(autoInclude, false) { }
+
+        public Scope() { }
 
         #region Exclude
 
@@ -291,7 +286,7 @@ namespace Platform.Helpers.Scopes
 
         protected override void Dispose(bool manual, bool wasDisposed)
         {
-            if(!wasDisposed)
+            if (!wasDisposed)
             {
                 while (_dependencies.Count > 0)
                 {

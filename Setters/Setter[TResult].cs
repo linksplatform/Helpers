@@ -4,14 +4,9 @@ namespace Platform.Helpers.Setters
 {
     public class Setter<TResult> : SetterBase<TResult>
     {
-        public Setter()
-        {
-        }
+        public Setter(TResult defaultValue) : base(defaultValue) { }
 
-        public Setter(TResult defaultValue)
-            : base(defaultValue)
-        {
-        }
+        public Setter() { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool SetAndReturnTrue(TResult value)

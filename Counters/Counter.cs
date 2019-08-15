@@ -8,9 +8,7 @@ namespace Platform.Helpers.Counters
     public class Counter
     {
         protected ulong _count;
-
         public ulong Count => _count;
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Increment() => _count++;
     }

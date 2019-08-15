@@ -8,15 +8,9 @@ namespace Platform.Helpers.Setters
     public abstract class SetterBase<TResult>
     {
         protected TResult _result;
-
         public TResult Result => _result;
-
-        protected SetterBase()
-        {
-        }
-
+        protected SetterBase() { }
         protected SetterBase(TResult defaultValue) => _result = defaultValue;
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Set(TResult value) => _result = value;
     }

@@ -9,17 +9,15 @@ namespace Platform.Helpers.Singletons
     public static class Default<T>
         where T : new()
     {
-        /// <summary>
-        /// Default.GetOrCreateThreadInstance methods are recommended instead.
-        /// Use direclty only if you understand what you are doing (see remarks for hint).
-        /// </summary>
-        /// <remarks>
-        /// If you really need maximum performance, use this field together with Default.InitializeThreadInstance method.
-        /// This method should be called only once per thread, but you can call multiple times if you need to replace the instance with new one.
-        /// </remarks>
         [ThreadStatic]
-        public static T ThreadInstance;
+        private static T _threadInstance;
 
         public static readonly T Instance = new T();
+
+        /// <summary>
+        /// If you really need maximum performance, use this property.
+        /// This property should create only one instance per thread.
+        /// </summary>
+        public static T ThreadInstance => _threadInstance == null ? _threadInstance = new T() : _threadInstance;
     }
 }

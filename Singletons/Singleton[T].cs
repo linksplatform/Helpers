@@ -8,21 +8,9 @@ namespace Platform.Helpers.Singletons
 {
     public struct Singleton<T>
     {
-        private static readonly ConcurrentDictionary<Func<T>, byte[]> Functions = new ConcurrentDictionary<Func<T>, byte[]>();
-        private static readonly ConcurrentDictionary<byte[], T> Singletons = new ConcurrentDictionary<byte[], T>(Default<IListEqualityComparer<byte>>.Instance);
-
-        private readonly Func<T> _creator;
-
-        public Singleton(Func<T> creator) => _creator = creator;
-
-        public T Instance
-        {
-            get
-            {
-                var creatorCopy = _creator;
-                var bytes = Functions.GetOrAdd(creatorCopy, creatorCopy.GetMethodInfo().GetILBytes());
-                return Singletons.GetOrAdd(bytes, key => creatorCopy());
-            }
-        }
+        private static readonly ConcurrentDictionary<Func<T>, byte[]> _functions = new ConcurrentDictionary<Func<T>, byte[]>();
+        private static readonly ConcurrentDictionary<byte[], T> _singletons = new ConcurrentDictionary<byte[], T>(Default<IListEqualityComparer<byte>>.Instance);
+        public T Instance { get; }
+        public Singleton(Func<T> creator) => Instance = _singletons.GetOrAdd(_functions.GetOrAdd(creator, creator.GetMethodInfo().GetILBytes()), key => creator());
     }
 }
