@@ -62,8 +62,8 @@ namespace Platform.Helpers.Scopes
 
         public void Include<T>()
         {
-            var types = Types.Get<T>();
-            if (types.Count > 0)
+            var types = Types<T>.Array;
+            if (types.Length > 0)
             {
                 types.ForEach(Include);
             }
@@ -289,11 +289,14 @@ namespace Platform.Helpers.Scopes
 
         #endregion
 
-        protected override void DisposeCore(bool manual, bool wasDisposed)
+        protected override void Dispose(bool manual, bool wasDisposed)
         {
-            while (_dependencies.Count > 0)
+            if(!wasDisposed)
             {
-                Disposable.TryDispose(_dependencies.Pop());
+                while (_dependencies.Count > 0)
+                {
+                    _dependencies.Pop().DisposeIfPossible();
+                }
             }
         }
     }
