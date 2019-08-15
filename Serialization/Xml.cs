@@ -12,7 +12,7 @@ namespace Platform.Helpers.Serialization
 
         public static XmlSerializer GetCachedXmlSerializer<T>() => _xmlSerializerCache.GetOrAdd(typeof(T), type => new XmlSerializer(type));
 
-        public static T DeserializeFromXmlFile<T>(string path)
+        public static T FromFile<T>(string path)
         {
             using (var reader = File.OpenRead(path))
             {
@@ -20,7 +20,7 @@ namespace Platform.Helpers.Serialization
             }
         }
 
-        public static T DeserializeFromXmlString<T>(string xmlString)
+        public static T FromString<T>(string xmlString)
         {
             using (var reader = new StringReader(xmlString))
             {
@@ -28,7 +28,7 @@ namespace Platform.Helpers.Serialization
             }
         }
 
-        public static void SerializeToXmlFile<T>(T obj, string path)
+        public static void ToFile<T>(T obj, string path)
         {
             using (var fileStream = File.OpenWrite(path))
             {
@@ -36,7 +36,7 @@ namespace Platform.Helpers.Serialization
             }
         }
 
-        public static string SerializeToXmlString<T>(T obj)
+        public static string ToString<T>(T obj)
         {
             var sb = new StringBuilder();
             using (var writer = new StringWriter(sb))
