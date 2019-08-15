@@ -8,21 +8,18 @@ namespace Platform.Helpers.Setters
         private readonly TDecision _trueValue;
         private readonly TDecision _falseValue;
 
-        public Setter()
-        {
-        }
-
-        public Setter(TResult defaultValue)
-            : base(defaultValue)
-        {
-        }
-
         public Setter(TDecision trueValue, TDecision falseValue, TResult defaultValue)
             : base(defaultValue)
         {
             _trueValue = trueValue;
             _falseValue = falseValue;
         }
+
+        public Setter(TDecision trueValue, TDecision falseValue) : this(trueValue, falseValue, default) { }
+
+        public Setter(TResult defaultValue) : base(defaultValue) { }
+
+        public Setter() { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TDecision SetAndReturnTrue(TResult value)
