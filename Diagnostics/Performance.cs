@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Platform.Helpers
+namespace Platform.Helpers.Diagnostics
 {
-    public static class PerformanceHelpers
+    public static class Performance
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TimeSpan Measure(Action action)
