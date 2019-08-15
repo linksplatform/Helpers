@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Platform.Helpers.Serialization
 {
-    public static class SerializationHelpers
+    public static class Xml
     {
         private static readonly ConcurrentDictionary<Type, XmlSerializer> _xmlSerializerCache = new ConcurrentDictionary<Type, XmlSerializer>();
 
